@@ -1,0 +1,7 @@
+organization=carnaes-info
+projectKey=carnaes-info_test-impacta-devsecops
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.65075
+dashboardUrl=https://sonarcloud.io/dashboard?id=carnaes-info_test-impacta-devsecops
+ceTaskId=AZfAsn3E73511ezYKEih
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZfAsn3E73511ezYKEih

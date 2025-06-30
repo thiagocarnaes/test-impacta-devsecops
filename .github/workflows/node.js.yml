@@ -43,6 +43,7 @@ jobs:
         retention-days: 1
   
   sonar:
+    needs: build  # Ensure the build job is completed before running SonarQube analysis
     runs-on: ubuntu-latest
 
     strategy:
@@ -90,7 +91,7 @@ jobs:
       run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 
   deploy:
-    needs: [build, sonar] 
+    needs: [sonar] 
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
@@ -101,8 +102,12 @@ jobs:
         name: dist-files-20.x
         path: dist/
     
-    - name: Deploy to staging
-      run: |
-        echo "Deploying to staging environment..."
-        # Add your deployment commands here
-        # Example: rsync, AWS CLI, or other deployment tools
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Sync files to S3
+      run: aws s3 sync ./dist s3://${{ secrets.AWS_BUCKET_S3 }} --delete --acl public-read

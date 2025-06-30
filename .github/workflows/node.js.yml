@@ -50,21 +50,13 @@ jobs:
         path: dist/
         retention-days: 1
     
-    - name: SonarQube Scan
-      uses: sonarqube-quality-gate-action@master
-      with:
-        scanMetadataReportFile: target/sonar/report-task.txt
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-    
     - name: Run SonarQube Scanner
       uses: sonarsource/sonarqube-scan-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
     
     - name: SonarQube Quality Gate check
       id: sonarqube-quality-gate-check
@@ -73,6 +65,7 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
     
     - name: Show SonarQube Quality Gate Status
       run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"

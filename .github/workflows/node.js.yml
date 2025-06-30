@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-test-scan:
+  build:
     runs-on: ubuntu-latest
     
     strategy:
@@ -46,7 +46,11 @@ jobs:
         name: dist-files-${{ matrix.node-version }}
         path: dist/
         retention-days: 1
+  
+  sonar:
+    runs-on: ubuntu-latest
     
+    steps:
     - name: Run SonarQube Scanner
       uses: sonarsource/sonarqube-scan-action@v2
       env:

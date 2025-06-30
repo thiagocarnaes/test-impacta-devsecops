@@ -86,7 +86,7 @@ jobs:
       run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 
   deploy:
-    needs: build
+    needs: [build, sonar] 
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
